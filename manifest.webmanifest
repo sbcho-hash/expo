@@ -1,6 +1,6 @@
 {
   "id": "vlux-expo-field-note-pwa-v1",
-  "name": "VLUX 전시참관노트",
+  "name": "사업기획부 전시참관노트",
   "short_name": "전시참관노트",
   "description": "전시회 부스 기록, 사진, 체크리스트, 보고서 요약을 모바일에서 빠르게 관리하는 PWA",
   "start_url": "./index.html?app=vlux-expo-field-note-v1",
