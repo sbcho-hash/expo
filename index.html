@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f766e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="전시참관노트" />
+  <meta name="description" content="전시회 부스 기록, 사진, 체크리스트, 보고서 요약을 모바일에서 빠르게 관리하는 PWA" />
+  <title>VLUX 전시참관노트</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" id="eventEyebrow">전시회 현장 기록</p>
+        <h1>VLUX 전시참관노트</h1>
+      </div>
+      <button id="installBtn" class="ghost small hidden" type="button">설치</button>
+    </header>
+
+    <main>
+      <section id="view-records" class="view active" aria-label="부스 기록">
+        <div class="hero-card">
+          <div>
+            <p class="section-kicker">오늘의 목적</p>
+            <h2>부스를 “제품”이 아니라 “시장 신호”로 기록하세요.</h2>
+            <p class="muted">현장에서 30초 안에 핵심만 저장하고, 전시 후 대표님 보고용 요약으로 정리합니다.</p>
+          </div>
+          <button id="quickAddBtn" class="primary" type="button">+ 부스 기록</button>
+        </div>
+
+        <div class="metrics-grid" id="metricsGrid"></div>
+
+        <div class="toolbar sticky-filter">
+          <label class="searchbox">
+            <span>검색</span>
+            <input id="searchInput" type="search" placeholder="브랜드, 국가, 메모 검색" autocomplete="off" />
+          </label>
+          <select id="statusFilter" aria-label="상태 필터">
+            <option value="all">전체 상태</option>
+            <option value="보고 포함">보고 포함</option>
+            <option value="후보">후보</option>
+            <option value="자료 요청">자료 요청</option>
+            <option value="재방문 필요">재방문 필요</option>
+            <option value="보류">보류</option>
+          </select>
+          <select id="tagFilter" aria-label="태그 필터">
+            <option value="all">전체 태그</option>
+          </select>
+        </div>
+
+        <div id="recordsList" class="cards-list"></div>
+        <div id="emptyState" class="empty-state hidden">
+          <div class="empty-icon">🧭</div>
+          <h3>아직 기록된 부스가 없습니다.</h3>
+          <p>전시장에서는 길게 쓰지 말고, 브랜드명·핵심 인상·사진만 먼저 저장해도 충분합니다.</p>
+          <button class="primary" type="button" data-open-form>첫 부스 기록하기</button>
+        </div>
+      </section>
+
+      <section id="view-report" class="view" aria-label="보고서 요약">
+        <div class="page-title">
+          <p class="section-kicker">자동 정리</p>
+          <h2>대표님 보고용 요약</h2>
+          <p class="muted">보고 포함/후보 부스를 기준으로, 반복 신호와 적용 포인트를 정리합니다.</p>
+        </div>
+
+        <div class="report-actions">
+          <button id="copyReportBtn" class="primary" type="button">보고서 복사</button>
+          <button id="downloadReportBtn" class="secondary" type="button">TXT 저장</button>
+        </div>
+
+        <article id="reportBox" class="report-box"></article>
+      </section>
+
+      <section id="view-settings" class="view" aria-label="설정 및 데이터 관리">
+        <div class="page-title">
+          <p class="section-kicker">설정</p>
+          <h2>전시회 정보와 데이터 관리</h2>
+        </div>
+
+        <form id="settingsForm" class="settings-card">
+          <label>
+            전시회명
+            <input id="settingEventName" type="text" placeholder="예: Interzoo 2026" />
+          </label>
+          <label>
+            이번 참관 목적
+            <textarea id="settingPurpose" rows="3" placeholder="예: 글로벌 펫 시장의 제품 설계 방식과 기능성 표현 트렌드 확인"></textarea>
+          </label>
+          <label>
+            중점 관찰 키워드
+            <input id="settingFocus" type="text" placeholder="예: 기능성 표현, 신제형, 패키지, 수출전략" />
+          </label>
+          <button class="primary full" type="submit">설정 저장</button>
+        </form>
+
+        <div class="settings-card">
+          <h3>데이터 백업</h3>
+          <p class="muted">휴대폰 브라우저에 저장된 데이터를 JSON 파일로 백업하거나 다시 불러올 수 있습니다.</p>
+          <div class="button-row">
+            <button id="exportJsonBtn" class="secondary" type="button">JSON 백업</button>
+            <label class="secondary file-button">JSON 불러오기<input id="importJsonInput" type="file" accept="application/json" /></label>
+          </div>
+        </div>
+
+        <div class="settings-card danger-zone">
+          <h3>초기화</h3>
+          <p class="muted">모든 부스 기록과 설정을 삭제합니다. 삭제 후 복구할 수 없습니다.</p>
+          <button id="clearDataBtn" class="danger" type="button">전체 데이터 삭제</button>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="하단 메뉴">
+      <button class="nav-item active" type="button" data-view="records"><span>📝</span>기록</button>
+      <button class="nav-item" type="button" data-view="report"><span>📌</span>보고서</button>
+      <button class="nav-item" type="button" data-view="settings"><span>⚙️</span>설정</button>
+    </nav>
+  </div>
+
+  <dialog id="recordDialog" class="record-dialog">
+    <form id="recordForm" method="dialog" class="record-form">
+      <div class="dialog-header">
+        <div>
+          <p class="section-kicker">30초 부스 체크</p>
+          <h2 id="dialogTitle">부스 기록</h2>
+        </div>
+        <button id="closeDialogBtn" class="icon-button" type="button" aria-label="닫기">×</button>
+      </div>
+
+      <input id="recordId" type="hidden" />
+
+      <div class="form-section">
+        <h3>기본 정보</h3>
+        <div class="grid-two">
+          <label>브랜드/업체명<input id="brandName" type="text" placeholder="예: Brand name" required /></label>
+          <label>국가<input id="country" type="text" placeholder="예: Germany" /></label>
+          <label>홀/부스<input id="boothNo" type="text" placeholder="예: Hall 3 / A-120" /></label>
+          <label>카테고리
+            <select id="category">
+              <option value="간식/트릿">간식/트릿</option>
+              <option value="사료/습식">사료/습식</option>
+              <option value="기능성/영양">기능성/영양</option>
+              <option value="구강/덴탈">구강/덴탈</option>
+              <option value="피부/미용">피부/미용</option>
+              <option value="의약외/OTC">의약외/OTC</option>
+              <option value="테크/서비스">테크/서비스</option>
+              <option value="패키지/부자재">패키지/부자재</option>
+              <option value="기타">기타</option>
+            </select>
+          </label>
+        </div>
+        <label>웹사이트/담당자<input id="contact" type="text" placeholder="URL, 명함 메모, 담당자 이메일 등" /></label>
+      </div>
+
+      <div class="form-section emphasized">
+        <h3>핵심 인사이트</h3>
+        <label>이 부스의 한 줄 역할<input id="oneLineRole" type="text" placeholder="예: 반려인이 매일 하던 구강관리 부담을 줄여주는 제품" /></label>
+        <label>없으면 사용자가 다시 해야 하는 행동<textarea id="replacedAction" rows="2" placeholder="예: 매일 칫솔질, 성분 비교, 급여량 계산 등"></textarea></label>
+        <label>왜 눈에 띄었는가<textarea id="whyInteresting" rows="3" placeholder="제형, 패키지, 표현 방식, 원료 조합, 진열 방식 등"></textarea></label>
+      </div>
+
+      <div class="form-section">
+        <h3>사진</h3>
+        <div class="photo-box">
+          <input id="photoInput" type="file" accept="image/*" capture="environment" />
+          <img id="photoPreview" class="photo-preview hidden" alt="부스 사진 미리보기" />
+          <button id="removePhotoBtn" type="button" class="ghost hidden">사진 삭제</button>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>관찰 포인트</h3>
+        <div id="checklistGroup" class="pill-grid"></div>
+      </div>
+
+      <div class="form-section">
+        <h3>태그</h3>
+        <div id="tagGroup" class="pill-grid"></div>
+      </div>
+
+      <div class="form-section">
+        <h3>평가 점수</h3>
+        <div class="score-list">
+          <label>사업 연관성 <input id="scoreRelevance" type="range" min="1" max="5" value="3" /><output for="scoreRelevance">3</output></label>
+          <label>새로움 <input id="scoreNovelty" type="range" min="1" max="5" value="3" /><output for="scoreNovelty">3</output></label>
+          <label>적용 가능성 <input id="scoreApplicability" type="range" min="1" max="5" value="3" /><output for="scoreApplicability">3</output></label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>후속 조치</h3>
+        <div class="grid-two">
+          <label>상태
+            <select id="status">
+              <option value="후보">후보</option>
+              <option value="보고 포함">보고 포함</option>
+              <option value="자료 요청">자료 요청</option>
+              <option value="재방문 필요">재방문 필요</option>
+              <option value="보류">보류</option>
+            </select>
+          </label>
+          <label>우선순위
+            <select id="priority">
+              <option value="A">A: 반드시 검토</option>
+              <option value="B" selected>B: 참고 가치 있음</option>
+              <option value="C">C: 단순 참고</option>
+            </select>
+          </label>
+        </div>
+        <label>추가 메모<textarea id="notes" rows="3" placeholder="가격, MOQ, 샘플 요청, 경쟁사 비교 등"></textarea></label>
+        <label>다음 액션<input id="nextAction" type="text" placeholder="예: 샘플 요청 / 카탈로그 확보 / 귀국 후 원료 검토" /></label>
+      </div>
+
+      <div class="form-actions">
+        <button id="deleteRecordBtn" class="danger hidden" type="button">삭제</button>
+        <button class="secondary" type="button" id="saveDraftBtn">임시 저장</button>
+        <button class="primary" type="submit">저장</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
