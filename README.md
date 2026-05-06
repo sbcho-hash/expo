@@ -58,7 +58,7 @@
 
 이 앱은 아래 값을 별도로 설정했습니다.
 
-- 앱 이름: `VLUX 전시참관노트`
+- 앱 이름: `사업기획부 전시참관노트`
 - short name: `전시참관노트`
 - manifest id: `vlux-expo-field-note-pwa-v1`
 - cache name: `vlux-expo-field-note-cache-v1`
