@@ -129,9 +129,14 @@
             <p class="hint">여러 장 추가 가능합니다. iPhone은 사진 보관함/카메라 선택이 가능합니다.</p>
           </div>
         </div>
-        <label class="secondary file-label full">사진 여러 장 추가
-          <input id="photoInput" type="file" accept="image/*" multiple>
-        </label>
+        <div class="button-row wrap media-buttons">
+          <label class="secondary file-label">앨범에서 여러 장 추가
+            <input id="photoInput" type="file" accept="image/*" multiple>
+          </label>
+          <label class="primary file-label">카메라로 촬영
+            <input id="cameraInput" type="file" accept="image/*" capture="environment">
+          </label>
+        </div>
         <div id="photoPreview" class="photo-preview"></div>
       </div>
 

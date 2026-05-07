@@ -1,4 +1,4 @@
-const CACHE_NAME = "vlux-expo-field-note-v2-cache-20260507";
+const CACHE_NAME = "vlux-expo-field-note-v3-cache-20260507";
 const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));

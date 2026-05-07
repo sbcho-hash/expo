@@ -2,7 +2,7 @@
   "id": "/vlux-expo-field-note-v2/",
   "name": "사업기획부 전시참관노트",
   "short_name": "전시참관노트",
-  "description": "전시회 부스 기록, 사진, 녹음, 인사이트 정리용 PWA",
+  "description": "전시회 부스 기록, 사진 여러 장, 카메라 촬영, 녹음, 인사이트 정리용 PWA",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
