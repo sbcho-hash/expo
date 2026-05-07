@@ -1,27 +1,24 @@
 {
-  "id": "vlux-expo-field-note-pwa-v1",
+  "id": "/vlux-expo-field-note-v2/",
   "name": "사업기획부 전시참관노트",
   "short_name": "전시참관노트",
-  "description": "전시회 부스 기록, 사진, 체크리스트, 보고서 요약을 모바일에서 빠르게 관리하는 PWA",
-  "start_url": "./index.html?app=vlux-expo-field-note-v1",
+  "description": "전시회 부스 기록, 사진, 녹음, 인사이트 정리용 PWA",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#f5f7f6",
-  "theme_color": "#0f766e",
-  "categories": ["productivity", "business", "utilities"],
+  "background_color": "#f4f8f6",
+  "theme_color": "#3d7772",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "./icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
       "src": "./icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
